@@ -1,2 +1,2 @@
-# javascript-bookmark-app
+# JavaScript Bookmark App
 Bookmark app built using JavaScript
