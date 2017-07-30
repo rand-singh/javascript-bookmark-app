@@ -9,7 +9,8 @@
     <style>
         body{
             padding: 30px;
-            background-image: url('virpeen.jpg');
+            /*background-image: url('virpeen.jpg');*/
+            background-image: url('https://static.pexels.com/photos/461767/pexels-photo-461767.jpeg');
             background-size:cover;
         }
 
@@ -52,7 +53,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.6);
             width: 100%;
             height: 100%;
             opacity: 0;
@@ -152,32 +153,65 @@
     overlay.addEventListener('click', closeFloater);
 
     // =======================
+
+    localStorage.setItem('my_thing', 'something');
+
     const bookmarksList = document.querySelector('.bookmarks-list');
     const bookmarkForm = document.querySelector('.bookmark-form');
     const bookmarkInput = bookmarkForm.querySelector('input[type=text]');
+    const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+
+    fillBookmarksList(bookmarks);
 
     function createBookmark(e){
         // prevent the form from being submitted when user presses enter
         e.preventDefault();
-        console.log('proces form');
 
-        // grab for input
+        // add new bookmark to the bookmarks
         const title = bookmarkInput.value;
-        const bookmark = document.createElement('a');
-        bookmark.className = 'bookmark';
-        bookmark.innerText = title;
-        bookmark.href = '#';
-        bookmark.target = '_blank';
-        console.log(bookmark);
+        const bookmark = {
+            title: title
+        };
 
-        bookmarksList.appendChild(bookmark);
+        bookmarks.push(bookmark);
+//        console.table(bookmarks);
+        fillBookmarksList(bookmarks);
+        storeBookmarks(bookmarks);
 
         bookmarkForm.reset();
+
+        // save that bookmarks list to localStorage
+
+        // grab form input
+//        const title = bookmarkInput.value;
+//        const bookmark = document.createElement('a');
+//        bookmark.className = 'bookmark';
+//        bookmark.innerText = title;
+//        bookmark.href = '#';
+//        bookmark.target = '_blank';
+//        console.log(bookmark);
+//        bookmarksList.appendChild(bookmark);
     }
 
+    function fillBookmarksList(bookmarks = []){
+        const bookmarksHtml = bookmarks.map((bookmark) => {
+            return `
+                <a href="#" class="bookmark">
+                    ${bookmark.title}
+                </a>
+            `;
+        }).join('');
+
+        console.log(bookmarksHtml);
+
+        bookmarksList.innerHTML = bookmarksHtml;
+    }
+
+    function storeBookmarks(bookmarks = []){
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    }
 
     bookmarkForm.addEventListener('submit', createBookmark);
-
 
 </script>
 
